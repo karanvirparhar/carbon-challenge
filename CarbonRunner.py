@@ -116,11 +116,12 @@ for i in range(0, 7, 2):
 num_collectables = 100
 
 class Collectable(pygame.sprite.Sprite):
-    def __init__(self, image_name, score_boost, footprint):
+    def __init__(self, image_name, score_boost, footprint, isgood):
         super().__init__()
         self.image_name = image_name
         self.score_boost = score_boost
         self.footprint = footprint
+        self.isgood = isgood
         self.rect = None
 
 collectables = []
@@ -131,16 +132,16 @@ def initCollectables():
     for i in range(num_collectables):
         chance = random.randint(1, 100)
         if chance <= 25:
-            leaf = Collectable("leaf1.png", 2, -20)
+            leaf = Collectable("leaf1.png", 2, -20, True)
             collectables.append(leaf)
         elif chance <= 45:
-            panel = Collectable("panel1.png", 5, -30)
+            panel = Collectable("panel1.png", 5, -30, True)
             collectables.append(panel)
         elif chance <= 60:
-            evbattery = Collectable("evbattery.png", 10, -40)
+            evbattery = Collectable("evbattery.png", 10, -40, True)
             collectables.append(evbattery)
         elif chance <= 100:
-            smog_cloud = Collectable("smog_cloud.png", 0, 20)
+            smog_cloud = Collectable("smog_cloud.png", 0, 20, False)
             collectables.append(smog_cloud)
 
     space = random.randint(50, 125)
@@ -274,7 +275,10 @@ while True:
 
         for i in range(len(collectables)):
             if player_rect.colliderect(collectables[i]):
-                collect_sound.play()
+                if collectables[i].isgood == True:
+                    collect_sound.play()
+                else:
+                    loss_sound.play()
                 collectables[i].rect.y += 200
                 score += collectables[i].score_boost
                 if collectables[i].score_boost == 0:
