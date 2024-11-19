@@ -270,8 +270,8 @@ while True:
                     score = 0
                     meter_length = 20
                     initCollectables()
-            if event.type == MOUSEBUTTONDOWN:
-                meter_length += 5
+            # if event.type == MOUSEBUTTONDOWN:
+            #     meter_length += 5
 
         for i in range(len(collectables)):
             if player_rect.colliderect(collectables[i]):
