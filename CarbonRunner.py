@@ -155,6 +155,36 @@ def initCollectables():
 
 initCollectables()
 
+encounters = {}
+instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
+                "panel1.png": "Solar panels are eco-friendly renewable energy sources. Collect them for a greener world.",
+                "evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
+                "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!"}
+
+def show_instruction_popup(collecteditem):
+    print(collecteditem.image_name)
+    if not collecteditem.image_name in encounters:
+        encounters[collecteditem.image_name] = 1
+        popup_font = pygame.font.SysFont("Comic Sans", 12)
+        popup_text = popup_font.render(instructions[collecteditem.image_name], True, (1, 50, 32))
+        popup_text_rect = popup_text.get_rect()
+        popup_text_rect.center = (Width//2, Height//2)
+
+        pygame.draw.rect(screen, 'white', popup_text_rect)
+        screen.blit(popup_text, popup_text_rect)
+
+        pygame.display.update()
+
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        running = False
+
 bg_width = bg.get_width()
 tiles = math.ceil(Width / bg_width) + 1
 
@@ -208,6 +238,10 @@ while True:
 
         for i in range(0, tiles):
             screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
+
+        screen.blit(score_text, score_rect)
+        screen.blit(high_score_text, high_score_rect)
+        screen.blit(carbon_text, carbon_rect)
 
         carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
         pygame.draw.rect(screen, (139, 0, 0), (420, 29, 150, 10), 1)
@@ -279,6 +313,7 @@ while True:
                     collect_sound.play()
                 else:
                     loss_sound.play()
+                show_instruction_popup(collectables[i])
                 collectables[i].rect.y += 200
                 score += collectables[i].score_boost
                 if collectables[i].score_boost == 0:
@@ -314,9 +349,5 @@ while True:
             player_rect.bottom = Height
             jump_count = 0
             y_velocity = jump_velocity
-
-        screen.blit(score_text, score_rect)
-        screen.blit(high_score_text, high_score_rect)
-        screen.blit(carbon_text, carbon_rect)
         
         pygame.display.update()
