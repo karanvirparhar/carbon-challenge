@@ -5,8 +5,6 @@ from pygame.locals import *
 
 pygame.init()
 
-#test
-
 Width = 1500
 Height = 500
 
