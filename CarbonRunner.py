@@ -154,7 +154,7 @@ def initCollectables():
         collectables[i].rect = collect_image.get_rect()
         collectables[i].rect.x = Width + space
         collectables[i].rect.y = Height - collect_image.get_height()
-        space += random.randint(250, 550)
+        space += random.randint(250, 350)
 
 initCollectables()
 
@@ -174,6 +174,7 @@ def show_instruction_popup(collecteditem):
         popup_text_rect = popup_text.get_rect()
         popup_text_rect.center = (Width//2, Height//2)
 
+        pygame.draw.rect(screen, 'orange', (popup_text_rect.centerx - popup_text_rect.width//2 - 10, popup_text_rect.y - 10, popup_text_rect.width + 20, popup_text_rect.height + 20))
         pygame.draw.rect(screen, 'white', popup_text_rect)
         screen.blit(popup_text, popup_text_rect)
 
