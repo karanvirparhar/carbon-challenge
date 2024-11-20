@@ -140,8 +140,11 @@ def initCollectables():
         elif chance <= 60:
             evbattery = Collectable("evbattery.png", 10, -40, True)
             collectables.append(evbattery)
-        elif chance <= 100:
+        elif chance <= 85:
             smog_cloud = Collectable("smog_cloud.png", 0, 20, False)
+            collectables.append(smog_cloud)
+        elif chance <= 100:
+            smog_cloud = Collectable("oil_spill.png", -5, 25, False)
             collectables.append(smog_cloud)
 
     space = random.randint(50, 125)
@@ -151,7 +154,7 @@ def initCollectables():
         collectables[i].rect = collect_image.get_rect()
         collectables[i].rect.x = Width + space
         collectables[i].rect.y = Height - collect_image.get_height()
-        space += random.randint(350, 650)
+        space += random.randint(250, 550)
 
 initCollectables()
 
@@ -159,13 +162,14 @@ encounters = {}
 instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
                 "panel1.png": "Solar panels are eco-friendly renewable energy sources. Collect them for a greener world.",
                 "evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
-                "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!"}
+                "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
+                "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win."}
 
 def show_instruction_popup(collecteditem):
     print(collecteditem.image_name)
     if not collecteditem.image_name in encounters:
         encounters[collecteditem.image_name] = 1
-        popup_font = pygame.font.SysFont("Comic Sans", 12)
+        popup_font = pygame.font.SysFont("Comic Sans", 25)
         popup_text = popup_font.render(instructions[collecteditem.image_name], True, (1, 50, 32))
         popup_text_rect = popup_text.get_rect()
         popup_text_rect.center = (Width//2, Height//2)
@@ -303,9 +307,8 @@ while True:
                     m = 0
                     score = 0
                     meter_length = 20
+                    boost_distance = 0
                     initCollectables()
-            # if event.type == MOUSEBUTTONDOWN:
-            #     meter_length += 5
 
         for i in range(len(collectables)):
             if player_rect.colliderect(collectables[i]):
