@@ -131,30 +131,34 @@ def initCollectables():
     collectables = []
     for i in range(num_collectables):
         chance = random.randint(1, 100)
-        if chance <= 25:
-            leaf = Collectable("leaf1.png", 2, -20, True)
+        if chance <= 15:
+            leaf = Collectable("leaf1.png", 2, -5, True)
             collectables.append(leaf)
-        elif chance <= 45:
-            panel = Collectable("panel1.png", 5, -30, True)
+        elif chance <= 30:
+            panel = Collectable("panel1.png", 5, -10, True)
             collectables.append(panel)
-        elif chance <= 60:
-            evbattery = Collectable("evbattery.png", 10, -40, True)
+        elif chance <= 45:
+            evbattery = Collectable("evbattery.png", 10, -15, True)
             collectables.append(evbattery)
-        elif chance <= 85:
-            smog_cloud = Collectable("smog_cloud.png", 0, 20, False)
+        elif chance <= 65:
+            smog_cloud = Collectable("smog_cloud.png", 0, 30, False)
             collectables.append(smog_cloud)
+        elif chance <= 90:
+            oil_spill = Collectable("oil_spill.png", -5, 35, False)
+            collectables.append(oil_spill)
         elif chance <= 100:
-            smog_cloud = Collectable("oil_spill.png", -5, 25, False)
-            collectables.append(smog_cloud)
+            water_bottle = Collectable("water_bottle.png", 2, 0, True)
+            collectables.append(water_bottle)
 
-    space = random.randint(50, 125)
+    space = random.randint(25, 100)
 
     for i in range(len(collectables)):
         collect_image = pygame.image.load(collectables[i].image_name)
         collectables[i].rect = collect_image.get_rect()
         collectables[i].rect.x = Width + space
-        collectables[i].rect.y = Height - collect_image.get_height()
-        space += random.randint(250, 350)
+        ground = random.randint(0, 1)
+        collectables[i].rect.y = Height - collect_image.get_height() - 100 * ground
+        space += random.randint(200, 250)
 
 initCollectables()
 
@@ -163,10 +167,10 @@ instructions = {"leaf1.png": "Catch this! Leaves and trees are important for sav
                 "panel1.png": "Solar panels are eco-friendly renewable energy sources. Collect them for a greener world.",
                 "evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
                 "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
-                "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win."}
+                "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
+                "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions."}
 
 def show_instruction_popup(collecteditem):
-    print(collecteditem.image_name)
     if not collecteditem.image_name in encounters:
         encounters[collecteditem.image_name] = 1
         popup_font = pygame.font.SysFont("Comic Sans", 25)
@@ -188,7 +192,7 @@ def show_instruction_popup(collecteditem):
                     pygame.quit()
                     exit()
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
                         running = False
 
 bg_width = bg.get_width()
@@ -216,6 +220,7 @@ score_boost_rect.bottomleft = (player_rect.topleft)
 boost_distance = 75
 
 color = 'green'
+limit = 100
 
 while True:
 
@@ -250,15 +255,14 @@ while True:
         screen.blit(carbon_text, carbon_rect)
 
         carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
-        pygame.draw.rect(screen, (139, 0, 0), (420, 29, 150, 10), 1)
+        pygame.draw.rect(screen, (139, 0, 0), (420, 29, limit, 10), 1)
 
-        if meter_length <= 50:
+        if meter_length <= 33:
             color = 'green'
-        elif meter_length <= 100:
+        elif meter_length <= 66:
             color = 'orange'
-        elif meter_length <= 150:
+        elif meter_length <= limit:
             color = (139, 0, 0)
-        
 
         scroll -= 7
 
@@ -341,10 +345,11 @@ while True:
             boost_distance -= 5
             screen.blit(score_boost_text, score_boost_rect)
 
-        if meter_length >= 150:
+        if meter_length >= limit:
             m = 2
             loss_sound.play()
             meter_length = 20
+            boost_distance = 0
             high_score = max(score, high_score)
             score = 0
             initCollectables()
