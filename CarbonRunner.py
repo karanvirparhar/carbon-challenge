@@ -116,15 +116,18 @@ for i in range(0, 7, 2):
 num_collectables = 100
 
 class Collectable(pygame.sprite.Sprite):
-    def __init__(self, image_name, score_boost, footprint, isgood):
+    def __init__(self, image_name, score_boost, footprint, isgood, shield):
         super().__init__()
         self.image_name = image_name
         self.score_boost = score_boost
         self.footprint = footprint
         self.isgood = isgood
+        self.shield = shield
         self.rect = None
 
 collectables = []
+
+shield = Collectable("shield.png", 0, 0, True, True)
 
 def initCollectables():
     global collectables
@@ -132,23 +135,26 @@ def initCollectables():
     for i in range(num_collectables):
         chance = random.randint(1, 100)
         if chance <= 15:
-            leaf = Collectable("leaf1.png", 2, -5, True)
+            leaf = Collectable("leaf1.png", 2, -5, True, False)
             collectables.append(leaf)
         elif chance <= 30:
-            panel = Collectable("panel1.png", 5, -10, True)
+            panel = Collectable("panel1.png", 5, -10, True, False)
             collectables.append(panel)
         elif chance <= 45:
-            evbattery = Collectable("evbattery.png", 10, -15, True)
+            evbattery = Collectable("evbattery.png", 10, -15, True, False)
             collectables.append(evbattery)
         elif chance <= 65:
-            smog_cloud = Collectable("smog_cloud.png", 0, 30, False)
+            smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False)
             collectables.append(smog_cloud)
-        elif chance <= 90:
-            oil_spill = Collectable("oil_spill.png", -5, 35, False)
+        elif chance <= 80:
+            oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 100:
-            water_bottle = Collectable("water_bottle.png", 2, 0, True)
+        elif chance <= 90:
+            water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
+        elif chance <= 100:
+            shield = Collectable("shield.png", 0, 0, True, True)
+            collectables.append(shield)
 
     space = random.randint(25, 100)
 
@@ -174,12 +180,13 @@ def show_instruction_popup(collecteditem):
     if not collecteditem.image_name in encounters:
         encounters[collecteditem.image_name] = 1
         popup_font = pygame.font.SysFont("Comic Sans", 25)
-        popup_text = popup_font.render(instructions[collecteditem.image_name], True, (1, 50, 32))
+        if collecteditem.image_name in instructions:
+            popup_text = popup_font.render(instructions[collecteditem.image_name], True, (1, 50, 32))
         popup_text_rect = popup_text.get_rect()
         popup_text_rect.center = (Width//2, Height//2)
 
         # pygame.draw.rect(screen, 'orange', (popup_text_rect.centerx - popup_text_rect.width//2 - 10, popup_text_rect.y - 10, popup_text_rect.width + 20, popup_text_rect.height + 20))
-        pygame.draw.rect(screen, 'orange', (popup_text_rect.x + 10, popup_text_rect.y + 10, popup_text_rect.width, popup_text_rect.height))
+        pygame.draw.rect(screen, 'orange', (popup_text_rect.x, popup_text_rect.y, popup_text_rect.width + 10, popup_text_rect.height + 10))
         pygame.draw.rect(screen, 'white', popup_text_rect)
         screen.blit(popup_text, popup_text_rect)
 
@@ -218,12 +225,17 @@ score_boost_rect = score_boost_text.get_rect()
 score_boost_rect.bottomleft = (player_rect.topleft)
 
 boost_distance = 75
+activate_shield = False
 
 color = 'green'
 limit = 100
 
-while True:
+timer_event = pygame.event.custom_type()
+pygame.time.set_timer(timer_event, 1000)
 
+timer = 0
+
+while True:
     clock.tick(FPS)
 
     if m == 0:
@@ -236,7 +248,7 @@ while True:
 
         count += 1
 
-        if collectables[num_collectables - 1].rect.x < 0:
+        if collectables[num_collectables - 1].rect.x < - player_rect.width:
             initCollectables()
 
         #Update Score
@@ -246,6 +258,10 @@ while True:
         high_score_text = font.render("High Score: " + str(high_score), True, (0, 0, 139))
         high_score_rect = high_score_text.get_rect()
         high_score_rect.topleft = (1200, 10)
+        
+        timer_text = font.render("Timer: " + str(timer), True, 'purple')
+        timer_text_rect = timer_text.get_rect()
+        timer_text_rect = (1000, 10)
 
         for i in range(0, tiles):
             screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
@@ -296,6 +312,12 @@ while True:
                 screen.blit(anime_jump[2], player_rect)
             elif jump_count >= 12:
                 screen.blit(anime_jump[3], player_rect)
+
+        if activate_shield:
+            shield_image = pygame.image.load(shield.image_name)
+            shield_rect = shield_image.get_rect()
+            shield_rect.center = player_rect.center
+            screen.blit(shield_image, shield_rect)
             
         jump_count += 1
 
@@ -312,9 +334,20 @@ while True:
                 if event.key == K_ESCAPE:
                     m = 0
                     score = 0
+                    player_rect.centerx = Width//2
+                    player_rect.y = player_height = Height - player_image.get_height()
+                    is_jumping = False
+                    activate_shield = False
                     meter_length = 20
                     boost_distance = 0
                     initCollectables()
+                    timer = 0
+            if event.type == timer_event:
+                if timer > 0:
+                    timer -= 1
+        
+        if timer <= 0:
+            activate_shield = False
 
         for i in range(len(collectables)):
             if player_rect.colliderect(collectables[i]):
@@ -322,7 +355,15 @@ while True:
                     collect_sound.play()
                 else:
                     loss_sound.play()
-                show_instruction_popup(collectables[i])
+                    if activate_shield:
+                        collectables[i].scoreboost = 0
+                        collectables[i].footprint = 0
+                if collectables[i].shield == True:
+                    activate_shield = True
+                    timer += 30
+                    screen.blit(timer_text, timer_text_rect)
+                else:
+                    show_instruction_popup(collectables[i])
                 collectables[i].rect.y += 200
                 score += collectables[i].score_boost
                 if collectables[i].score_boost == 0:
@@ -353,6 +394,8 @@ while True:
             high_score = max(score, high_score)
             score = 0
             initCollectables()
+            activate_shield = False
+            timer = 0
 
         if player_rect.bottom > Height:
             is_jumping = False
