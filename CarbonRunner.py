@@ -369,7 +369,7 @@ while True:
                 else:
                     if collectables[i].score_boost > 0:
                         score_boost_text = font.render("+" + str(collectables[i].score_boost), True, (1, 50, 32))
-                    else:
+                    elif collectables[i].score_boost < 0:
                         score_boost_text = font.render(str(collectables[i].score_boost), True, (1, 50, 32))
                     boost_distance = 75
                 score_boost_rect = score_boost_text.get_rect()
