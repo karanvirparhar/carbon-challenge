@@ -149,7 +149,7 @@ def initCollectables():
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 99:
+        elif chance <= 80:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
         elif chance <= 100:
@@ -232,7 +232,6 @@ limit = 100
 
 timer_event = pygame.event.custom_type()
 pygame.time.set_timer(timer_event, 1000)
-
 timer = 0
 
 while True:
@@ -259,9 +258,9 @@ while True:
         high_score_rect = high_score_text.get_rect()
         high_score_rect.topleft = (1200, 10)
         
-        timer_text = font.render("Timer: " + str(timer), True, 'purple')
+        timer_text = font.render("Shield Timer: " + str(timer), True, 'purple')
         timer_text_rect = timer_text.get_rect()
-        timer_text_rect = (1000, 10)
+        timer_text_rect = (800, 10)
 
         for i in range(0, tiles):
             screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
@@ -361,7 +360,6 @@ while True:
                 if collectables[i].shield == True:
                     activate_shield = True
                     timer += 30
-                    screen.blit(timer_text, timer_text_rect)
                 else:
                     show_instruction_popup(collectables[i])
                 collectables[i].rect.y += 200
@@ -402,5 +400,7 @@ while True:
             player_rect.bottom = Height
             jump_count = 0
             y_velocity = jump_velocity
+
+        screen.blit(timer_text, timer_text_rect)
         
         pygame.display.update()
