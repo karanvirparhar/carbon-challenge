@@ -97,21 +97,23 @@ carbon_rect.topleft = (250, 10)
 collect_sound = pygame.mixer.Sound("collect.wav")
 loss_sound = pygame.mixer.Sound("loss.wav")
 
-for i in range(0, 7, 2):
-    image_name = "run__00" + str(i) + ".png"
+for i in range(1, 5):
+    image_name = "player-run-" + str(i) + ".png"
     player_image = pygame.image.load(image_name)
-    player_rect = player_image.get_rect()
+    new_player_image = pygame.transform.scale(player_image, (72, 90))
+    player_rect = new_player_image.get_rect()
     player_rect.centerx = Width//2
-    player_rect.y = player_height = Height - player_image.get_height()
-    anime_run.append(player_image)
+    player_rect.y = player_height = Height - new_player_image.get_height()
+    anime_run.append(new_player_image)
 
-for i in range(0, 7, 2):
-    image_name = "jump__00" + str(i) + ".png"
+for i in range(1, 3):
+    image_name = "player-jump-" + str(i) + ".png"
     player_image = pygame.image.load(image_name)
-    player_rect = player_image.get_rect()
+    new_player_image = pygame.transform.scale(player_image, (72, 90))
+    player_rect = new_player_image.get_rect()
     player_rect.centerx = Width//2
-    player_rect.y = player_height = Height - player_image.get_height()
-    anime_jump.append(player_image)
+    player_rect.y = player_height = Height - new_player_image.get_height()
+    anime_jump.append(new_player_image)
 
 num_collectables = 100
 
@@ -126,8 +128,6 @@ class Collectable(pygame.sprite.Sprite):
         self.rect = None
 
 collectables = []
-
-shield = Collectable("shield.png", 0, 0, True, True)
 
 def initCollectables():
     global collectables
@@ -310,12 +310,8 @@ while True:
 
             if jump_count <= 3:
                 screen.blit(anime_jump[0], player_rect)
-            elif jump_count <= 6:
+            elif jump_count >= 4:
                 screen.blit(anime_jump[1], player_rect)
-            elif jump_count <= 9:
-                screen.blit(anime_jump[2], player_rect)
-            elif jump_count >= 12:
-                screen.blit(anime_jump[3], player_rect)
 
         if activate_shield:
             shield_image = pygame.image.load(shield.image_name)
