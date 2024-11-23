@@ -232,7 +232,7 @@ limit = 100
 
 timer_event = pygame.event.custom_type()
 pygame.time.set_timer(timer_event, 1000)
-timer = 0
+timer = -1
 
 while True:
     clock.tick(FPS)
@@ -247,7 +247,7 @@ while True:
 
         count += 1
 
-        if collectables[num_collectables - 1].rect.x < - player_rect.width:
+        if collectables[num_collectables - 1].rect.x < - collectables[num_collectables - 1].rect.width:
             initCollectables()
 
         #Update Score
@@ -267,6 +267,8 @@ while True:
 
         screen.blit(score_text, score_rect)
         screen.blit(high_score_text, high_score_rect)
+        if timer >= 0:
+            screen.blit(timer_text, timer_text_rect)
         screen.blit(carbon_text, carbon_rect)
 
         carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
@@ -342,10 +344,10 @@ while True:
                     initCollectables()
                     timer = 0
             if event.type == timer_event:
-                if timer > 0:
+                if timer >= 0:
                     timer -= 1
         
-        if timer <= 0:
+        if timer < 0:
             activate_shield = False
 
         for i in range(len(collectables)):
@@ -355,10 +357,12 @@ while True:
                 else:
                     loss_sound.play()
                     if activate_shield:
-                        collectables[i].scoreboost = 0
+                        collectables[i].score_boost = 0
                         collectables[i].footprint = 0
                 if collectables[i].shield == True:
                     activate_shield = True
+                    if timer == -1:
+                        timer = 0
                     timer += 30
                 else:
                     show_instruction_popup(collectables[i])
@@ -400,7 +404,5 @@ while True:
             player_rect.bottom = Height
             jump_count = 0
             y_velocity = jump_velocity
-
-        screen.blit(timer_text, timer_text_rect)
         
         pygame.display.update()
