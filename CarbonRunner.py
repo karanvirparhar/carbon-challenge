@@ -129,6 +129,8 @@ class Collectable(pygame.sprite.Sprite):
 
 collectables = []
 
+shield = Collectable("shield.png", 0, 0, True, True)
+
 def initCollectables():
     global collectables
     collectables = []
@@ -206,6 +208,7 @@ bg_width = bg.get_width()
 tiles = math.ceil(Width / bg_width) + 1
 
 scroll = 0
+collectable_scroll = 7
 count = 0
 jump_count = 0
 y_velocity = 0
@@ -284,12 +287,36 @@ while True:
         elif meter_length <= limit:
             color = (139, 0, 0)
 
-        scroll -= 7
+        if score <= 75:
+            scroll -= 7
+        elif score <= 150:
+            scroll -= 8
+        elif score <= 225:
+            scroll -= 9
+        elif score <= 300:
+            scroll -= 10
+        elif score <= 375:
+            scroll -= 11
+        elif score > 375:
+            scroll -= 12
 
         for i in range(len(collectables)):
             collect_image = pygame.image.load(collectables[i].image_name)
             screen.blit(collect_image, (collectables[i].rect.x, collectables[i].rect.y))
-            collectables[i].rect.x -= 7
+            collectables[i].rect.x -= collectable_scroll
+        
+        if score <= 75:
+            collectable_scroll = 7
+        elif score <= 150:
+            collectable_scroll = 8
+        elif score <= 225:
+            collectable_scroll = 9
+        elif score <= 300:
+            collectable_scroll = 10
+        elif score <= 375:
+            collectable_scroll = 11
+        elif score > 375:
+            collectable_scroll = 12
 
         if abs(scroll) > bg_width:
             scroll = 0
@@ -334,6 +361,7 @@ while True:
                 if event.key == K_ESCAPE:
                     m = 0
                     score = 0
+                    timer = -1
                     player_rect.centerx = Width//2
                     player_rect.y = player_height = Height - player_image.get_height()
                     is_jumping = False
@@ -341,11 +369,14 @@ while True:
                     meter_length = 20
                     boost_distance = 0
                     initCollectables()
-                    timer = 0
             if event.type == timer_event:
                 if timer >= 0:
                     timer -= 1
-        
+            # if event.type == MOUSEBUTTONDOWN:
+            #     score += 5
+            # if event.type == KEYDOWN:
+            #     score -= 5
+
         if timer < 0:
             activate_shield = False
 
@@ -396,7 +427,10 @@ while True:
             score = 0
             initCollectables()
             activate_shield = False
-            timer = 0
+            timer = -1
+            player_rect.centerx = Width//2
+            player_rect.y = player_height = Height - player_image.get_height()
+            is_jumping = False
 
         if player_rect.bottom > Height:
             is_jumping = False
