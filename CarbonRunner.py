@@ -149,7 +149,7 @@ def initCollectables():
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 80:
+        elif chance <= 99:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
         elif chance <= 100:
