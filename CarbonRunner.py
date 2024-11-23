@@ -149,7 +149,7 @@ def initCollectables():
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 99:
+        elif chance <= 80:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
         elif chance <= 100:
@@ -258,7 +258,10 @@ while True:
         high_score_rect = high_score_text.get_rect()
         high_score_rect.topleft = (1200, 10)
         
-        timer_text = font.render("Shield Timer: " + str(timer), True, 'purple')
+        if len(str(timer % 60)) > 1:
+            timer_text = font.render("Shield Timer: " + str(timer // 60) + ": " + str(timer % 60), True, 'purple')
+        else:
+            timer_text = font.render("Shield Timer: " + str(timer // 60) + ": " + "0" + str(timer % 60), True, 'purple')
         timer_text_rect = timer_text.get_rect()
         timer_text_rect = (800, 10)
 
