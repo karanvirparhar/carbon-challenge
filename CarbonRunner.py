@@ -61,6 +61,11 @@ def menu():
                     sound = False
                 elif sound == False:
                     sound = True
+    
+    if sound == True or sound == "placeholder":
+        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+    elif sound == False:
+        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
 
 def game_over():
     global m
@@ -106,6 +111,11 @@ def game_over():
                     sound = False
                 elif sound == False:
                     sound = True
+        
+    if sound == True or sound == "placeholder":
+        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+    elif sound == False:
+        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
 
 anime_run = []
 anime_jump = []
@@ -205,7 +215,13 @@ instructions = {"leaf1.png": "Catch this! Leaves and trees are important for sav
                 "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
                 "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions."}
 
+bg_width = bg.get_width()
+tiles = math.ceil(Width / bg_width) + 1
+
 def show_instruction_popup(collecteditem):
+    global sound
+    global bg_width
+    global tiles
     if not collecteditem.image_name in encounters:
         encounters[collecteditem.image_name] = 1
         popup_font = pygame.font.SysFont("Comic Sans", 25)
@@ -215,14 +231,60 @@ def show_instruction_popup(collecteditem):
         popup_text_rect.center = (Width//2, Height//2)
 
         # pygame.draw.rect(screen, 'orange', (popup_text_rect.centerx - popup_text_rect.width//2 - 10, popup_text_rect.y - 10, popup_text_rect.width + 20, popup_text_rect.height + 20))
-        pygame.draw.rect(screen, 'orange', (popup_text_rect.x, popup_text_rect.y, popup_text_rect.width + 10, popup_text_rect.height + 10))
-        pygame.draw.rect(screen, 'white', popup_text_rect)
-        screen.blit(popup_text, popup_text_rect)
 
         pygame.display.update()
 
         running = True
         while running:
+            score_text = font.render("Score: " + str(score), True, (0, 0, 139))
+            score_rect = score_text.get_rect()
+            score_rect.topleft = (10, 10)
+            high_score_text = font.render("High Score: " + str(high_score), True, (0, 0, 139))
+            high_score_rect = high_score_text.get_rect()
+            high_score_rect.topleft = (1200, 10)
+
+            for i in range(0, tiles):
+                screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
+
+            screen.blit(score_text, score_rect)
+            screen.blit(high_score_text, high_score_rect)
+            screen.blit(carbon_text, carbon_rect)
+
+            carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
+            pygame.draw.rect(screen, (139, 0, 0), (420, 29, limit, 10), 1)
+
+            s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+
+            sound_text = font.render("Sound", True, 'white')
+            sound_text_rect = sound_text.get_rect()
+            sound_text_rect.center = (s.center)
+
+            screen.blit(sound_text, sound_text_rect)
+
+            for i in range(len(collectables)):
+                collect_image = pygame.image.load(collectables[i].image_name)
+                screen.blit(collect_image, (collectables[i].rect.x, collectables[i].rect.y))
+
+            if not is_jumping:
+                if count % 4 == 1:
+                    screen.blit(anime_run[0], player_rect)
+                elif count % 4 == 2:
+                    screen.blit(anime_run[1], player_rect)
+                elif count % 4 == 3:
+                    screen.blit(anime_run[2], player_rect)
+                elif count % 4 == 0:
+                    screen.blit(anime_run[3], player_rect)
+
+            else:
+                if jump_count <= 3:
+                    screen.blit(anime_jump[0], player_rect)
+                elif jump_count >= 4:
+                    screen.blit(anime_jump[1], player_rect)
+
+            pygame.draw.rect(screen, 'orange', (popup_text_rect.x, popup_text_rect.y, popup_text_rect.width + 10, popup_text_rect.height + 10))
+            pygame.draw.rect(screen, 'white', popup_text_rect)
+            screen.blit(popup_text, popup_text_rect)
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -230,9 +292,25 @@ def show_instruction_popup(collecteditem):
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE or event.key == K_SPACE:
                         running = False
+                if event.type == MOUSEBUTTONDOWN:
+                    if s.collidepoint(event.pos):
+                        if sound == True or sound == "placeholder":
+                            sound = False
+                        elif sound == False:
+                            sound = True
+            
+            if sound == True or sound == "placeholder":
+                pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+            else:
+                pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
 
-bg_width = bg.get_width()
-tiles = math.ceil(Width / bg_width) + 1
+            pygame.display.update()
+
+            if sound == False:
+                pygame.mixer.music.pause()
+            elif sound == True:
+                pygame.mixer.music.unpause()
+                sound = "placeholder"
 
 scroll = 0
 collectable_scroll = 7
@@ -271,9 +349,9 @@ while True:
     clock.tick(FPS)
 
     if sound == False:
-        pygame.mixer.music.stop()
+        pygame.mixer.music.pause()
     elif sound == True:
-        pygame.mixer.music.play(-1, 0.0)
+        pygame.mixer.music.unpause()
         sound = "placeholder"
 
     if m == 0:
@@ -340,10 +418,10 @@ while True:
             scroll -= 9
         elif score <= 300:
             scroll -= 10
-        elif score <= 375:
-            scroll -= 11
-        elif score > 375:
-            scroll -= 12
+        # elif score <= 375:
+        #     scroll -= 11
+        # elif score > 375:
+        #     scroll -= 12
 
         for i in range(len(collectables)):
             collect_image = pygame.image.load(collectables[i].image_name)
@@ -358,10 +436,10 @@ while True:
             collectable_scroll = 9
         elif score <= 300:
             collectable_scroll = 10
-        elif score <= 375:
-            collectable_scroll = 11
-        elif score > 375:
-            collectable_scroll = 12
+        # elif score <= 375:
+        #     collectable_scroll = 11
+        # elif score > 375:
+        #     collectable_scroll = 12
 
         if abs(scroll) > bg_width:
             scroll = 0
@@ -423,6 +501,11 @@ while True:
                         sound = False
                     elif sound == False:
                         sound = True
+
+        if sound == True or sound == "placeholder":
+            pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+        elif sound == False:
+            pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
 
         if timer < 0:
             activate_shield = False
