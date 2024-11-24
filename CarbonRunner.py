@@ -18,9 +18,11 @@ screen = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption('Carbon Runner')
 
 m = 0
+sound = True
 
 def menu():
     global m
+    global sound
     # print("entered menu function")
     screen.fill('black')
     p = pygame.draw.rect(screen, 'orange', (Width//2 - 200, Height//2 - 50, 100, 50))
@@ -34,8 +36,16 @@ def menu():
     quit_text_rect = quit_text.get_rect()
     quit_text_rect.center = (q.center)
 
+    s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+
+    sound_text = font.render("Sound", True, 'white')
+    sound_text_rect = sound_text.get_rect()
+    sound_text_rect.center = (s.center)
+
+    screen.blit(sound_text, sound_text_rect)
     screen.blit(play_text, play_text_rect)
     screen.blit(quit_text, quit_text_rect)
+
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -46,13 +56,20 @@ def menu():
                 # print("m after play clicked", m)
             elif q.collidepoint(event.pos):
                 pygame.quit()
+            elif s.collidepoint(event.pos):
+                if sound == True or sound == "placeholder":
+                    sound = False
+                elif sound == False:
+                    sound = True
 
 def game_over():
     global m
+    global sound
     # print("entered menu function")
     screen.fill('black')
     p = pygame.draw.rect(screen, 'orange', (Width//2 - 200, Height//2 - 50, 100, 50))
     q = pygame.draw.rect(screen, 'orange', (Width//2 + 100, Height//2 - 50, 100, 50))
+    s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
 
     game_over_text = font.render("Game Over!", True, 'red')
     game_over_text_rect = game_over_text.get_rect()
@@ -66,9 +83,14 @@ def game_over():
     quit_text_rect = quit_text.get_rect()
     quit_text_rect.center = (q.center)
 
+    sound_text = font.render("Sound", True, 'white')
+    sound_text_rect = sound_text.get_rect()
+    sound_text_rect.center = (s.center)
+
     screen.blit(play_text, play_text_rect)
     screen.blit(quit_text, quit_text_rect)
     screen.blit(game_over_text, game_over_text_rect)
+    screen.blit(sound_text, sound_text_rect)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -79,6 +101,11 @@ def game_over():
                 # print("m after play clicked", m)
             elif q.collidepoint(event.pos):
                 pygame.quit()
+            elif s.collidepoint(event.pos):
+                if sound == True or sound == "placeholder":
+                    sound = False
+                elif sound == False:
+                    sound = True
 
 anime_run = []
 anime_jump = []
@@ -103,7 +130,7 @@ for i in range(1, 5):
     new_player_image = pygame.transform.scale(player_image, (72, 90))
     player_rect = new_player_image.get_rect()
     player_rect.centerx = Width//2
-    player_rect.y = player_height = Height - new_player_image.get_height()
+    player_rect.y = player_y = Height - new_player_image.get_height()
     anime_run.append(new_player_image)
 
 for i in range(1, 3):
@@ -112,7 +139,7 @@ for i in range(1, 3):
     new_player_image = pygame.transform.scale(player_image, (72, 90))
     player_rect = new_player_image.get_rect()
     player_rect.centerx = Width//2
-    player_rect.y = player_height = Height - new_player_image.get_height()
+    player_rect.y = player_y = Height - new_player_image.get_height()
     anime_jump.append(new_player_image)
 
 num_collectables = 100
@@ -151,7 +178,7 @@ def initCollectables():
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 99:
+        elif chance <= 80:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
         elif chance <= 100:
@@ -227,6 +254,9 @@ score_boost_text = font.render("", True, (1, 50, 32))
 score_boost_rect = score_boost_text.get_rect()
 score_boost_rect.bottomleft = (player_rect.topleft)
 
+# transparent_surface = pygame.Surface((player_rect.x, player_rect.y), pygame.SRCALPHA)
+# color = (0, 0, 139, 128)
+
 boost_distance = 75
 activate_shield = False
 
@@ -240,14 +270,21 @@ timer = -1
 while True:
     clock.tick(FPS)
 
+    if sound == False:
+        pygame.mixer.music.stop()
+    elif sound == True:
+        pygame.mixer.music.play(-1, 0.0)
+        sound = "placeholder"
+
     if m == 0:
         menu()
         pygame.display.update()
+
     elif m == 2:
         game_over()
         pygame.display.update()
-    elif m == 1:
 
+    elif m == 1:
         count += 1
 
         if collectables[num_collectables - 1].rect.x < - collectables[num_collectables - 1].rect.width:
@@ -279,6 +316,14 @@ while True:
 
         carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
         pygame.draw.rect(screen, (139, 0, 0), (420, 29, limit, 10), 1)
+        
+        s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+
+        sound_text = font.render("Sound", True, 'white')
+        sound_text_rect = sound_text.get_rect()
+        sound_text_rect.center = (s.center)
+
+        screen.blit(sound_text, sound_text_rect)
 
         if meter_length <= 33:
             color = 'green'
@@ -363,7 +408,7 @@ while True:
                     score = 0
                     timer = -1
                     player_rect.centerx = Width//2
-                    player_rect.y = player_height = Height - player_image.get_height()
+                    player_rect.y = player_y
                     is_jumping = False
                     activate_shield = False
                     meter_length = 20
@@ -372,23 +417,27 @@ while True:
             if event.type == timer_event:
                 if timer >= 0:
                     timer -= 1
-            # if event.type == MOUSEBUTTONDOWN:
-            #     score += 5
-            # if event.type == KEYDOWN:
-            #     score -= 5
+            if event.type == MOUSEBUTTONDOWN:
+                if s.collidepoint(event.pos):
+                    if sound == True or sound == "placeholder":
+                        sound = False
+                    elif sound == False:
+                        sound = True
 
         if timer < 0:
             activate_shield = False
 
         for i in range(len(collectables)):
             if player_rect.colliderect(collectables[i]):
-                if collectables[i].isgood == True:
-                    collect_sound.play()
-                else:
-                    loss_sound.play()
-                    if activate_shield:
-                        collectables[i].score_boost = 0
-                        collectables[i].footprint = 0
+                if sound != False:
+                    if collectables[i].isgood == True:
+                        collect_sound.play()
+                    else:
+                        loss_sound.play()
+                    if collectables[i].isgood == False:
+                        if activate_shield:
+                            collectables[i].score_boost = 0
+                            collectables[i].footprint = 0
                 if collectables[i].shield == True:
                     activate_shield = True
                     if timer == -1:
@@ -420,7 +469,8 @@ while True:
 
         if meter_length >= limit:
             m = 2
-            loss_sound.play()
+            if sound != False:
+                loss_sound.play()
             meter_length = 20
             boost_distance = 0
             high_score = max(score, high_score)
@@ -429,7 +479,7 @@ while True:
             activate_shield = False
             timer = -1
             player_rect.centerx = Width//2
-            player_rect.y = player_height = Height - player_image.get_height()
+            player_rect.y = player_y
             is_jumping = False
 
         if player_rect.bottom > Height:
