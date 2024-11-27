@@ -61,6 +61,10 @@ def menu():
                     sound = False
                 elif sound == False:
                     sound = True
+        if event.type == KEYDOWN:
+            if event.key == K_q:
+                pygame.quit()
+                exit()
     
     if sound == True or sound == "placeholder":
         pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
@@ -111,6 +115,10 @@ def game_over():
                     sound = False
                 elif sound == False:
                     sound = True
+        if event.type == KEYDOWN:
+            if event.key == K_q:
+                pygame.quit()
+                exit()
         
     if sound == True or sound == "placeholder":
         pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
@@ -120,7 +128,7 @@ def game_over():
 anime_run = []
 anime_jump = []
 
-bg = pygame.image.load("BG.png")
+bg = pygame.image.load("BG.jpg")
 
 player_height = 0
 is_jumping = False
@@ -188,9 +196,12 @@ def initCollectables():
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
             collectables.append(oil_spill)
-        elif chance <= 99:
+        elif chance <= 90:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
+        elif chance <= 99:
+            factory = Collectable("factory.png", -10, 40, False, False)
+            collectables.append(factory)
         elif chance <= 100:
             shield = Collectable("shield.png", 0, 0, True, True)
             collectables.append(shield)
@@ -213,7 +224,8 @@ instructions = {"leaf1.png": "Catch this! Leaves and trees are important for sav
                 "evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
                 "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
                 "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
-                "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions."}
+                "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions.",
+                "factory.png": "Factory emissions are horrible for Earth's climate. Avoid them to win the game."}
 
 bg_width = bg.get_width()
 tiles = math.ceil(Width / bg_width) + 1
@@ -248,6 +260,8 @@ def show_instruction_popup(collecteditem):
 
             screen.blit(score_text, score_rect)
             screen.blit(high_score_text, high_score_rect)
+            if timer >= 0:
+                screen.blit(timer_text, timer_text_rect)
             screen.blit(carbon_text, carbon_rect)
 
             carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
@@ -292,6 +306,9 @@ def show_instruction_popup(collecteditem):
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE or event.key == K_SPACE:
                         running = False
+                    if event.key == K_q:
+                        pygame.quit()
+                        exit()
                 if event.type == MOUSEBUTTONDOWN:
                     if s.collidepoint(event.pos):
                         if sound == True or sound == "placeholder":
@@ -416,7 +433,7 @@ while True:
             scroll -= 8
         elif score <= 225:
             scroll -= 9
-        elif score <= 300:
+        elif score > 225:
             scroll -= 10
         # elif score <= 375:
         #     scroll -= 11
@@ -434,7 +451,7 @@ while True:
             collectable_scroll = 8
         elif score <= 225:
             collectable_scroll = 9
-        elif score <= 300:
+        elif score > 300:
             collectable_scroll = 10
         # elif score <= 375:
         #     collectable_scroll = 11
@@ -492,6 +509,9 @@ while True:
                     meter_length = 20
                     boost_distance = 0
                     initCollectables()
+                if event.key == K_q:
+                    pygame.quit()
+                    exit()
             if event.type == timer_event:
                 if timer >= 0:
                     timer -= 1
@@ -517,10 +537,10 @@ while True:
                         collect_sound.play()
                     else:
                         loss_sound.play()
-                    if collectables[i].isgood == False:
-                        if activate_shield:
-                            collectables[i].score_boost = 0
-                            collectables[i].footprint = 0
+                if collectables[i].isgood == False:
+                    if activate_shield:
+                        collectables[i].score_boost = 0
+                        collectables[i].footprint = 0
                 if collectables[i].shield == True:
                     activate_shield = True
                     if timer == -1:
