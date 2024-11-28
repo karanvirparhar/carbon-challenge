@@ -199,7 +199,7 @@ def initCollectables():
         elif chance <= 90:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
-        elif chance <= 99:
+        elif chance <= 90:
             factory = Collectable("factory.png", -10, 40, False, False)
             collectables.append(factory)
         elif chance <= 100:
@@ -298,6 +298,12 @@ def show_instruction_popup(collecteditem):
             pygame.draw.rect(screen, 'orange', (popup_text_rect.x, popup_text_rect.y, popup_text_rect.width + 10, popup_text_rect.height + 10))
             pygame.draw.rect(screen, 'white', popup_text_rect)
             screen.blit(popup_text, popup_text_rect)
+
+            if activate_shield:
+                shield_image = pygame.image.load(shield.image_name)
+                shield_rect = shield_image.get_rect()
+                shield_rect.center = player_rect.center
+                screen.blit(shield_image, shield_rect)
 
             for event in pygame.event.get():
                 if event.type == QUIT:
