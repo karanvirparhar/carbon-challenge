@@ -11,9 +11,6 @@ Height = 500
 clock = pygame.time.Clock()
 FPS = 25
 
-score = 0
-high_score = 0
-
 screen = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption('Carbon Runner')
 
@@ -199,7 +196,7 @@ def initCollectables():
         elif chance <= 90:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
             collectables.append(water_bottle)
-        elif chance <= 90:
+        elif chance <= 99:
             factory = Collectable("factory.png", -10, 40, False, False)
             collectables.append(factory)
         elif chance <= 100:
@@ -367,6 +364,17 @@ limit = 100
 timer_event = pygame.event.custom_type()
 pygame.time.set_timer(timer_event, 1000)
 timer = -1
+
+def get_high_score():
+    with open("score.txt", "r") as file:
+        return int(file.read())
+
+def save_high_score(score):
+    with open("score.txt", "w") as file:
+        file.write(str(score))
+
+score = 0
+high_score = get_high_score()
 
 while True:
     clock.tick(FPS)
@@ -583,6 +591,7 @@ while True:
             meter_length = 20
             boost_distance = 0
             high_score = max(score, high_score)
+            save_high_score(high_score)
             score = 0
             initCollectables()
             activate_shield = False
