@@ -3,6 +3,7 @@ import random
 import math
 from easygui import *
 from pygame.locals import *
+import json
 
 pygame.init()
 
@@ -16,6 +17,15 @@ text = "Enter your Username"
 title = "Login"
 d_text = "Enter here..."
 name = enterbox(text, title, d_text)
+
+with open("username.json", "r") as file:
+    data = json.load(file)
+
+score = 0
+high_score = 0
+
+if name in data:
+    high_score = data[name]
 
 if name == None:
     pygame.quit()
@@ -109,7 +119,6 @@ def game_over():
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
-
         if event.type == MOUSEBUTTONDOWN:
             if p.collidepoint(event.pos):
                 m = 1
@@ -374,16 +383,13 @@ timer_event = pygame.event.custom_type()
 pygame.time.set_timer(timer_event, 1000)
 timer = -1
 
-def get_high_score():
-    with open("score.txt", "r") as file:
-        return int(file.read())
+# def get_high_score():
+#     with open("score.txt", "r") as file:
+#         return int(file.read())
 
-def save_high_score(score):
-    with open("score.txt", "w") as file:
-        file.write(str(score))
-
-score = 0
-high_score = get_high_score()
+# def save_high_score(score):
+#     with open("score.txt", "w") as file:
+#         file.write(str(score))
 
 while True:
     clock.tick(FPS)
@@ -523,6 +529,11 @@ while True:
                         y_velocity = jump_velocity
                 if event.key == K_ESCAPE:
                     m = 0
+                    high_score = max(score, high_score)
+                    # save_high_score(high_score)
+                    data[name] = high_score
+                    with open("username.json", "w") as file:
+                        json.dump(data, file, indent=4)
                     score = 0
                     timer = -1
                     player_rect.centerx = Width//2
@@ -600,7 +611,10 @@ while True:
             meter_length = 20
             boost_distance = 0
             high_score = max(score, high_score)
-            save_high_score(high_score)
+            # save_high_score(high_score)
+            data[name] = high_score
+            with open("username.json", "w") as file:
+                json.dump(data, file, indent=4)
             score = 0
             initCollectables()
             activate_shield = False
