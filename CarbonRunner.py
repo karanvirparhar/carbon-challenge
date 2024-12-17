@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from easygui import *
 from pygame.locals import *
 
 pygame.init()
@@ -10,6 +11,14 @@ Height = 500
 
 clock = pygame.time.Clock()
 FPS = 25
+
+text = "Enter your Username"
+title = "Login"
+d_text = "Enter here..."
+name = enterbox(text, title, d_text)
+
+if name == None:
+    pygame.quit()
 
 screen = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption('Carbon Runner')
