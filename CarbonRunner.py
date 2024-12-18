@@ -15,8 +15,14 @@ FPS = 25
 
 text = "Enter your Username"
 title = "Login"
-d_text = "Enter here..."
-name = enterbox(text, title, d_text)
+# d_text = "Enter here..."
+name = enterbox(text, title)
+lines = "\n" * 5
+# spaces = " " * (len(name) * 5 - len(name) // 5)
+text = "Welcome " + name + "!"
+centered_text = text.center(80)
+
+msgbox(lines + centered_text, title="Welcome!")
 
 with open("username.json", "r") as file:
     data = json.load(file)
@@ -268,7 +274,7 @@ def show_instruction_popup(collecteditem):
             score_rect.topleft = (10, 10)
             high_score_text = font.render("High Score: " + str(high_score), True, (0, 0, 139))
             high_score_rect = high_score_text.get_rect()
-            high_score_rect.topleft = (1200, 10)
+            high_score_rect.topleft = (1100, 10)
 
             for i in range(0, tiles):
                 screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
@@ -420,7 +426,7 @@ while True:
         score_rect.topleft = (10, 10)
         high_score_text = font.render("High Score: " + str(high_score), True, (0, 0, 139))
         high_score_rect = high_score_text.get_rect()
-        high_score_rect.topleft = (1200, 10)
+        high_score_rect.topleft = (1100, 10)
         
         if len(str(timer % 60)) > 1:
             timer_text = font.render("Shield Timer: " + str(timer // 60) + ": " + str(timer % 60), True, 'purple')
@@ -529,11 +535,6 @@ while True:
                         y_velocity = jump_velocity
                 if event.key == K_ESCAPE:
                     m = 0
-                    high_score = max(score, high_score)
-                    # save_high_score(high_score)
-                    data[name] = high_score
-                    with open("username.json", "w") as file:
-                        json.dump(data, file, indent=4)
                     score = 0
                     timer = -1
                     player_rect.centerx = Width//2
@@ -584,6 +585,11 @@ while True:
                     show_instruction_popup(collectables[i])
                 collectables[i].rect.y += 200
                 score += collectables[i].score_boost
+                high_score = max(score, high_score)
+                # save_high_score(high_score)
+                data[name] = high_score
+                with open("username.json", "w") as file:
+                    json.dump(data, file, indent=4)
                 if collectables[i].score_boost == 0:
                     score_boost_text = font.render("", True, (1, 50, 32))
                 else:
@@ -610,11 +616,6 @@ while True:
                 loss_sound.play()
             meter_length = 20
             boost_distance = 0
-            high_score = max(score, high_score)
-            # save_high_score(high_score)
-            data[name] = high_score
-            with open("username.json", "w") as file:
-                json.dump(data, file, indent=4)
             score = 0
             initCollectables()
             activate_shield = False
