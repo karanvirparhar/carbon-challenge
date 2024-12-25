@@ -433,10 +433,10 @@ while True:
         else:
             timer_text = font.render("Shield Timer: " + str(timer // 60) + ": " + "0" + str(timer % 60), True, 'purple')
         timer_text_rect = timer_text.get_rect()
-        timer_text_rect = (800, 10)
+        timer_text_rect = (700, 10)
 
         for i in range(0, tiles):
-            screen.blit(bg, (i * bg_width + scroll - (i * line), 0))
+            screen.blit(bg, (i * bg_width + scroll, 0))
 
         screen.blit(score_text, score_rect)
         screen.blit(high_score_text, high_score_rect)
@@ -486,7 +486,7 @@ while True:
             collectable_scroll = 8
         elif score <= 225:
             collectable_scroll = 9
-        elif score > 300:
+        elif score > 225:
             collectable_scroll = 10
         # elif score <= 375:
         #     collectable_scroll = 11
@@ -544,6 +544,10 @@ while True:
                     meter_length = 20
                     boost_distance = 0
                     initCollectables()
+                    high_score = max(score, high_score)
+                    data[name] = high_score
+                    with open("username.json", "w") as file:
+                        json.dump(data, file, indent=4)
                 if event.key == K_q:
                     pygame.quit()
                     exit()
