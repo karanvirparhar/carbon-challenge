@@ -24,7 +24,7 @@ centered_text = text.center(80)
 
 # msgbox(lines + centered_text, title="Welcome!")
 
-with open("username.json", "r") as file:
+with open("assets/username.json", "r") as file:
     data = json.load(file)
 
 score = 0
@@ -149,25 +149,25 @@ def game_over():
 anime_run = []
 anime_jump = []
 
-bg = pygame.image.load("BG.jpg")
+bg = pygame.image.load("assets/BG.jpg")
 
 player_height = 0
 is_jumping = False
 
-font = pygame.font.Font("Font.otf", 40)
+font = pygame.font.Font("assets/Font.otf", 40)
 
-guide_font = pygame.font.Font("Font.otf", 32)
-small_font = pygame.font.Font("Font.otf", 24)
+guide_font = pygame.font.Font("assets/Font.otf", 32)
+small_font = pygame.font.Font("assets/Font.otf", 24)
 
 carbon_text = font.render("Carbon Meter: ", True, (1, 50, 32))
 carbon_rect = carbon_text.get_rect()
 carbon_rect.topleft = (250, 10)
 
-collect_sound = pygame.mixer.Sound("collect.wav")
-loss_sound = pygame.mixer.Sound("loss.wav")
+collect_sound = pygame.mixer.Sound("assets/collect.wav")
+loss_sound = pygame.mixer.Sound("assets/loss.wav")
 
 for i in range(1, 5):
-    image_name = "player-run-" + str(i) + ".png"
+    image_name = "assets/player-run-" + str(i) + ".png"
     player_image = pygame.image.load(image_name)
     new_player_image = pygame.transform.scale(player_image, (72, 90))
     player_rect = new_player_image.get_rect()
@@ -176,7 +176,7 @@ for i in range(1, 5):
     anime_run.append(new_player_image)
 
 for i in range(1, 3):
-    image_name = "player-jump-" + str(i) + ".png"
+    image_name = "assets/player-jump-" + str(i) + ".png"
     player_image = pygame.image.load(image_name)
     new_player_image = pygame.transform.scale(player_image, (72, 90))
     player_rect = new_player_image.get_rect()
@@ -199,7 +199,7 @@ class Collectable(pygame.sprite.Sprite):
 
 collectibles = []
 
-shield = Collectable("shield.png", 0, 0, True, True, False)
+shield = Collectable("assets/shield.png", 0, 0, True, True, False)
 
 def initcollectibles():
     global collectibles
@@ -207,31 +207,31 @@ def initcollectibles():
     for i in range(num_collectibles):
         chance = random.randint(1, 100)
         if chance <= 15:
-            leaf = Collectable("leaf1.png", 2, -5, True, False, False)
+            leaf = Collectable("assets/leaf1.png", 2, -5, True, False, False)
             collectibles.append(leaf)
         elif chance <= 30:
-            panel = Collectable("panel1.png", 5, -10, True, False, False)
+            panel = Collectable("assets/panel1.png", 5, -10, True, False, False)
             collectibles.append(panel)
         elif chance <= 45:
-            evbattery = Collectable("evbattery.png", 10, -15, True, False, False)
+            evbattery = Collectable("assets/evbattery.png", 10, -15, True, False, False)
             collectibles.append(evbattery)
         elif chance <= 60:
-            smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False, True)
+            smog_cloud = Collectable("assets/smog_cloud.png", 0, 30, False, False, True)
             collectibles.append(smog_cloud)
         elif chance <= 75:
-            oil_spill = Collectable("oil_spill.png", -5, 35, False, False, False)
+            oil_spill = Collectable("assets/oil_spill.png", -5, 35, False, False, False)
             collectibles.append(oil_spill)
         elif chance <= 85:
-            fuel = Collectable("fuel.png", -8, 40, False, False, False)
+            fuel = Collectable("assets/fuel.png", -8, 40, False, False, False)
             collectibles.append(fuel)
         elif chance <= 90:
-            water_bottle = Collectable("water_bottle.png", 2, 0, True, False, False)
+            water_bottle = Collectable("assets/water_bottle.png", 2, 0, True, False, False)
             collectibles.append(water_bottle)
         elif chance <= 99:
-            factory = Collectable("factory.png", -10, 40, False, False, False)
+            factory = Collectable("assets/factory.png", -10, 40, False, False, False)
             collectibles.append(factory)
         elif chance <= 100:
-            shield = Collectable("shield.png", 0, 0, True, True, False)
+            shield = Collectable("assets/shield.png", 0, 0, True, True, False)
             collectibles.append(shield)
 
     space = random.randint(25, 100)
@@ -249,15 +249,15 @@ def initcollectibles():
 
 initcollectibles()
 
-leaf_img = pygame.image.load("leaf1.png")
-panel_img = pygame.image.load("panel1.png")
-battery_img = pygame.image.load("evbattery.png")
-bottle_img = pygame.image.load("water_bottle.png")
-shield_img = pygame.image.load("shield.png")
-smog_img = pygame.image.load("smog_cloud.png")
-oil_img = pygame.image.load("oil_spill.png")
-fuel_img = pygame.image.load("fuel.png")
-factory_img = pygame.image.load("factory.png")
+leaf_img = pygame.image.load("assets/leaf1.png")
+panel_img = pygame.image.load("assets/panel1.png")
+battery_img = pygame.image.load("assets/evbattery.png")
+bottle_img = pygame.image.load("assets/water_bottle.png")
+shield_img = pygame.image.load("assets/shield.png")
+smog_img = pygame.image.load("assets/smog_cloud.png")
+oil_img = pygame.image.load("assets/oil_spill.png")
+fuel_img = pygame.image.load("assets/fuel.png")
+factory_img = pygame.image.load("assets/factory.png")
 
 def draw_guide():
     global m
@@ -411,14 +411,14 @@ def draw_guide():
         pygame.draw.rect(screen, (92, 64, 51), (Width - 45, 412.5, 25, 25), 5)
 
 encounters = {}
-instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
-                "panel1.png": "Solar panels are eco-friendly renewable energy sources. Collect them for a greener world.",
-                "evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
-                "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
-                "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
-                "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions.",
-                "factory.png": "Factory emissions are horrible for Earth's climate. Avoid them to win the game.",
-                "fuel.png": "Fossil fuels contribute to over 75 percent of carbon emissions around the world! Stay away from these objects."
+instructions = {"assets/leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
+                "assets/panel1.png": "Solar panels are eco-friendly renewable energy sources. Collect them for a greener world.",
+                "assets/evbattery.png": "Electrical car batteries reduce usage of fossil fuels. Pick them up when you see them.",
+                "assets/smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
+                "assets/oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
+                "assets/water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions.",
+                "assets/factory.png": "Factory emissions are horrible for Earth's climate. Avoid them to win the game.",
+                "assets/fuel.png": "Fossil fuels contribute to over 75 percent of carbon emissions around the world! Stay away from these objects."
                 }
 
 bg_width = bg.get_width()
@@ -543,7 +543,7 @@ meter_length = 20
 
 line = 1
 
-pygame.mixer.music.load("Song.wav")
+pygame.mixer.music.load("assets/Song.wav")
 
 pygame.mixer.music.play(-1, 0.0)
 
@@ -566,7 +566,7 @@ timer = -1
 
 high_score = max(score, high_score)
 data[name] = high_score
-with open("username.json", "w") as file:
+with open("assets/username.json", "w") as file:
     json.dump(data, file, indent=4)
 
 # def get_high_score():
@@ -732,7 +732,7 @@ while True:
                     initcollectibles()
                     high_score = max(score, high_score)
                     data[name] = high_score
-                    with open("username.json", "w") as file:
+                    with open("assets/username.json", "w") as file:
                         json.dump(data, file, indent=4)
                 if event.key == K_q:
                     pygame.quit()
@@ -783,7 +783,7 @@ while True:
                 high_score = max(score, high_score)
                 # save_high_score(high_score)
                 data[name] = high_score
-                with open("username.json", "w") as file:
+                with open("assets/username.json", "w") as file:
                     json.dump(data, file, indent=4)
                 if collectibles[i].score_boost == 0:
                     score_boost_text = font.render("", True, (1, 50, 32))
