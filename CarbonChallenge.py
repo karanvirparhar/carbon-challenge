@@ -551,6 +551,11 @@ timer_event = pygame.event.custom_type()
 pygame.time.set_timer(timer_event, 1000)
 timer = -1
 
+high_score = max(score, high_score)
+data[name] = high_score
+with open("username.json", "w") as file:
+    json.dump(data, file, indent=4)
+
 # def get_high_score():
 #     with open("score.txt", "r") as file:
 #         return int(file.read())
