@@ -89,9 +89,9 @@ sound = True
 #                 exit()
     
     # if sound == True or sound == "placeholder":
-    #     pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+    #     pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
     # elif sound == False:
-    #     pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
+    #     pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
 
 def game_over():
     global m
@@ -142,9 +142,9 @@ def game_over():
                 exit()
         
     if sound == True or sound == "placeholder":
-        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+        pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
     elif sound == False:
-        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
+        pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
 
 anime_run = []
 anime_jump = []
@@ -184,7 +184,7 @@ for i in range(1, 3):
     player_rect.y = player_y = Height - new_player_image.get_height()
     anime_jump.append(new_player_image)
 
-num_collectables = 100
+num_collectibles = 100
 
 class Collectable(pygame.sprite.Sprite):
     def __init__(self, image_name, score_boost, footprint, isgood, shield, issmog):
@@ -197,54 +197,54 @@ class Collectable(pygame.sprite.Sprite):
         self.issmog = issmog
         self.rect = None
 
-collectables = []
+collectibles = []
 
 shield = Collectable("shield.png", 0, 0, True, True, False)
 
-def initCollectables():
-    global collectables
-    collectables = []
-    for i in range(num_collectables):
+def initcollectibles():
+    global collectibles
+    collectibles = []
+    for i in range(num_collectibles):
         chance = random.randint(1, 100)
         if chance <= 15:
             leaf = Collectable("leaf1.png", 2, -5, True, False, False)
-            collectables.append(leaf)
+            collectibles.append(leaf)
         elif chance <= 30:
             panel = Collectable("panel1.png", 5, -10, True, False, False)
-            collectables.append(panel)
+            collectibles.append(panel)
         elif chance <= 45:
             evbattery = Collectable("evbattery.png", 10, -15, True, False, False)
-            collectables.append(evbattery)
+            collectibles.append(evbattery)
         elif chance <= 65:
             smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False, True)
-            collectables.append(smog_cloud)
+            collectibles.append(smog_cloud)
         elif chance <= 80:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False, False)
-            collectables.append(oil_spill)
+            collectibles.append(oil_spill)
         elif chance <= 90:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False, False)
-            collectables.append(water_bottle)
+            collectibles.append(water_bottle)
         elif chance <= 99:
             factory = Collectable("factory.png", -10, 40, False, False, False)
-            collectables.append(factory)
+            collectibles.append(factory)
         elif chance <= 100:
             shield = Collectable("shield.png", 0, 0, True, True, False)
-            collectables.append(shield)
+            collectibles.append(shield)
 
     space = random.randint(25, 100)
 
-    for i in range(len(collectables)):
-        collect_image = pygame.image.load(collectables[i].image_name)
-        collectables[i].rect = collect_image.get_rect()
-        collectables[i].rect.x = Width + space
+    for i in range(len(collectibles)):
+        collect_image = pygame.image.load(collectibles[i].image_name)
+        collectibles[i].rect = collect_image.get_rect()
+        collectibles[i].rect.x = Width + space
         ground = random.randint(0, 1)
-        if collectables[i].issmog == True:
-            collectables[i].rect.y = Height - collect_image.get_height() - 100 * ground
+        if collectibles[i].issmog == True:
+            collectibles[i].rect.y = Height - collect_image.get_height() - 100 * ground
         else:
-            collectables[i].rect.y = Height - collect_image.get_height()
+            collectibles[i].rect.y = Height - collect_image.get_height()
         space += random.randint(200, 250)
 
-initCollectables()
+initcollectibles()
 
 leaf_img = pygame.image.load("leaf1.png")
 panel_img = pygame.image.load("panel1.png")
@@ -311,7 +311,8 @@ def draw_guide():
     screen.blit(desc, (x_good_text, y_start + spacing * 2 + 35))
     
     # Water Bottle
-    screen.blit(bottle_img, (x_good_img, y_start + spacing * 3))
+    bottle_width = bottle_img.get_width()
+    screen.blit(bottle_img, (x_good_img + bottle_width // 2 + 10, y_start + spacing * 3))
     text = guide_font.render("Water Bottle (+2 score, 0 carbon)", True, (0, 0, 0))
     desc = small_font.render("Recyclable and reusable", True, (100, 100, 100))
     screen.blit(text, (x_good_text, y_start + spacing * 3))
@@ -394,9 +395,9 @@ def draw_guide():
         
     # print("Exiting draw_guide...")
     if sound == True or sound == "placeholder":
-        pygame.draw.rect(screen, 'red', (1460, 412.5, 25, 25))
+        pygame.draw.rect(screen, (92, 64, 51), (1460, 412.5, 25, 25))
     elif sound == False:
-        pygame.draw.rect(screen, 'red', (1460, 412.5, 25, 25), 5)
+        pygame.draw.rect(screen, (92, 64, 51), (1460, 412.5, 25, 25), 5)
 
 encounters = {}
 instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
@@ -455,9 +456,9 @@ def show_instruction_popup(collecteditem):
 
             screen.blit(sound_text, sound_text_rect)
 
-            for i in range(len(collectables)):
-                collect_image = pygame.image.load(collectables[i].image_name)
-                screen.blit(collect_image, (collectables[i].rect.x, collectables[i].rect.y))
+            for i in range(len(collectibles)):
+                collect_image = pygame.image.load(collectibles[i].image_name)
+                screen.blit(collect_image, (collectibles[i].rect.x, collectibles[i].rect.y))
 
             if not is_jumping:
                 if count % 4 == 1:
@@ -505,9 +506,9 @@ def show_instruction_popup(collecteditem):
                         running = False
             
             if sound == True or sound == "placeholder":
-                pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
             else:
-                pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
+                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
 
             pygame.display.update()
 
@@ -584,8 +585,8 @@ while True:
     elif m == 1:
         count += 1
 
-        if collectables[num_collectables - 1].rect.x < - collectables[num_collectables - 1].rect.width:
-            initCollectables()
+        if collectibles[num_collectibles - 1].rect.x < - collectibles[num_collectibles - 1].rect.width:
+            initcollectibles()
 
         #Update Score
         score_text = font.render("Score: " + str(score), True, (0, 0, 139))
@@ -642,10 +643,10 @@ while True:
         # elif score > 375:
         #     scroll -= 12
 
-        for i in range(len(collectables)):
-            collect_image = pygame.image.load(collectables[i].image_name)
-            screen.blit(collect_image, (collectables[i].rect.x, collectables[i].rect.y))
-            collectables[i].rect.x -= collectable_scroll
+        for i in range(len(collectibles)):
+            collect_image = pygame.image.load(collectibles[i].image_name)
+            screen.blit(collect_image, (collectibles[i].rect.x, collectibles[i].rect.y))
+            collectibles[i].rect.x -= collectable_scroll
         
         if score <= 75:
             collectable_scroll = 7
@@ -710,7 +711,7 @@ while True:
                     activate_shield = False
                     meter_length = 20
                     boost_distance = 0
-                    initCollectables()
+                    initcollectibles()
                     high_score = max(score, high_score)
                     data[name] = high_score
                     with open("username.json", "w") as file:
@@ -734,50 +735,50 @@ while True:
                 #         y_velocity = jump_velocity
 
         if sound == True or sound == "placeholder":
-            pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+            pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
         elif sound == False:
-            pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
+            pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
 
         if timer < 0:
             activate_shield = False
 
-        for i in range(len(collectables)):
-            if player_rect.colliderect(collectables[i]):
+        for i in range(len(collectibles)):
+            if player_rect.colliderect(collectibles[i]):
                 if sound != False:
-                    if collectables[i].isgood == True:
+                    if collectibles[i].isgood == True:
                         collect_sound.play()
                     else:
                         loss_sound.play()
-                if collectables[i].isgood == False:
+                if collectibles[i].isgood == False:
                     if activate_shield:
-                        collectables[i].score_boost = 0
-                        collectables[i].footprint = 0
-                if collectables[i].shield == True:
+                        collectibles[i].score_boost = 0
+                        collectibles[i].footprint = 0
+                if collectibles[i].shield == True:
                     activate_shield = True
                     if timer == -1:
                         timer = 0
                     timer += 30
                 else:
-                    show_instruction_popup(collectables[i])
-                collectables[i].rect.y += 200
-                score += collectables[i].score_boost
+                    show_instruction_popup(collectibles[i])
+                collectibles[i].rect.y += 200
+                score += collectibles[i].score_boost
                 high_score = max(score, high_score)
                 # save_high_score(high_score)
                 data[name] = high_score
                 with open("username.json", "w") as file:
                     json.dump(data, file, indent=4)
-                if collectables[i].score_boost == 0:
+                if collectibles[i].score_boost == 0:
                     score_boost_text = font.render("", True, (1, 50, 32))
                 else:
-                    if collectables[i].score_boost > 0:
-                        score_boost_text = font.render("+" + str(collectables[i].score_boost), True, (1, 50, 32))
-                    elif collectables[i].score_boost < 0:
-                        score_boost_text = font.render(str(collectables[i].score_boost), True, (1, 50, 32))
+                    if collectibles[i].score_boost > 0:
+                        score_boost_text = font.render("+" + str(collectibles[i].score_boost), True, (1, 50, 32))
+                    elif collectibles[i].score_boost < 0:
+                        score_boost_text = font.render(str(collectibles[i].score_boost), True, (1, 50, 32))
                     boost_distance = 75
                 score_boost_rect = score_boost_text.get_rect()
                 score_boost_rect.bottomleft = (player_rect.topright)
                 
-                meter_length += collectables[i].footprint
+                meter_length += collectibles[i].footprint
                 if (meter_length < 0):
                     meter_length = 0
 
@@ -793,7 +794,7 @@ while True:
             meter_length = 20
             boost_distance = 0
             score = 0
-            initCollectables()
+            initcollectibles()
             activate_shield = False
             timer = -1
             player_rect.centerx = Width//2
