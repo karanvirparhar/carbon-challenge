@@ -215,12 +215,15 @@ def initcollectibles():
         elif chance <= 45:
             evbattery = Collectable("evbattery.png", 10, -15, True, False, False)
             collectibles.append(evbattery)
-        elif chance <= 65:
+        elif chance <= 60:
             smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False, True)
             collectibles.append(smog_cloud)
-        elif chance <= 80:
+        elif chance <= 75:
             oil_spill = Collectable("oil_spill.png", -5, 35, False, False, False)
             collectibles.append(oil_spill)
+        elif chance <= 85:
+            fuel = Collectable("fuel.png", -8, 40, False, False, False)
+            collectibles.append(fuel)
         elif chance <= 90:
             water_bottle = Collectable("water_bottle.png", 2, 0, True, False, False)
             collectibles.append(water_bottle)
@@ -253,6 +256,7 @@ bottle_img = pygame.image.load("water_bottle.png")
 shield_img = pygame.image.load("shield.png")
 smog_img = pygame.image.load("smog_cloud.png")
 oil_img = pygame.image.load("oil_spill.png")
+fuel_img = pygame.image.load("fuel.png")
 factory_img = pygame.image.load("factory.png")
 
 def draw_guide():
@@ -329,7 +333,7 @@ def draw_guide():
     # Smog Cloud
     screen.blit(smog_img, (x_bad_img, y_start))
     text = guide_font.render("Smog Cloud (0 score, +30 carbon)", True, (0, 0, 0))
-    desc = small_font.render("Fossil fuel pollution", True, (100, 100, 100))
+    desc = small_font.render("Industrial pollution", True, (100, 100, 100))
     screen.blit(text, (x_bad_text, y_start))
     screen.blit(desc, (x_bad_text, y_start + 35))
     
@@ -346,6 +350,13 @@ def draw_guide():
     desc = small_font.render("High emissions source", True, (100, 100, 100))
     screen.blit(text, (x_bad_text, y_start + spacing * 2))
     screen.blit(desc, (x_bad_text, y_start + spacing * 2 + 35))
+
+    # Fossil Fuel
+    screen.blit(fuel_img, (x_bad_img, y_start + spacing * 3))
+    text = guide_font.render("Fossil Fuel (-8 score, +40 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Fossil fuel pollution", True, (100, 100, 100))
+    screen.blit(text, (x_bad_text, y_start + spacing * 3))
+    screen.blit(desc, (x_bad_text, y_start + spacing * 3 + 35))
     
     # Add instructions at bottom
     exit_text = small_font.render("Press ESC to exit", True, (100, 100, 100))
@@ -406,7 +417,9 @@ instructions = {"leaf1.png": "Catch this! Leaves and trees are important for sav
                 "smog_cloud.png": "Smog clouds are a type of pollution caused by the burning of fossil fuels. Avoid them!",
                 "oil_spill.png": "Oil spills are dangerous for our environment. Jump over them to win.",
                 "water_bottle.png": "Recyclable water bottles help in making a greener Earth. They are reusable and lessen fossil fuel emmisions.",
-                "factory.png": "Factory emissions are horrible for Earth's climate. Avoid them to win the game."}
+                "factory.png": "Factory emissions are horrible for Earth's climate. Avoid them to win the game.",
+                "fuel.png": "Fossil fuels contribute to over 75 percent of carbon emissions around the world! Stay away from these objects."
+                }
 
 bg_width = bg.get_width()
 tiles = math.ceil(Width / bg_width) + 1
@@ -476,6 +489,11 @@ def show_instruction_popup(collecteditem):
                 elif jump_count >= 4:
                     screen.blit(anime_jump[1], player_rect)
 
+            if sound == True or sound == "placeholder":
+                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
+            else:
+                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
+
             pygame.draw.rect(screen, 'orange', (popup_text_rect.x, popup_text_rect.y, popup_text_rect.width + 10, popup_text_rect.height + 10))
             pygame.draw.rect(screen, 'white', popup_text_rect)
             screen.blit(popup_text, popup_text_rect)
@@ -504,11 +522,6 @@ def show_instruction_popup(collecteditem):
                             sound = True
                     if event.button == 1:
                         running = False
-            
-            if sound == True or sound == "placeholder":
-                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
-            else:
-                pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25), 5)
 
             pygame.display.update()
 
