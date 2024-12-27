@@ -395,9 +395,9 @@ def draw_guide():
         
     # print("Exiting draw_guide...")
     if sound == True or sound == "placeholder":
-        pygame.draw.rect(screen, (92, 64, 51), (1460, 412.5, 25, 25))
+        pygame.draw.rect(screen, (92, 64, 51), (Width - 45, 412.5, 25, 25))
     elif sound == False:
-        pygame.draw.rect(screen, (92, 64, 51), (1460, 412.5, 25, 25), 5)
+        pygame.draw.rect(screen, (92, 64, 51), (Width - 45, 412.5, 25, 25), 5)
 
 encounters = {}
 instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
