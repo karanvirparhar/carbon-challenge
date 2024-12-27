@@ -37,7 +37,7 @@ if name == None:
     pygame.quit()
 
 screen = pygame.display.set_mode((Width, Height))
-pygame.display.set_caption('Carbon Challenge')
+pygame.display.set_caption('Carbon Challenge: Run, Jump and Protect the Earth')
 
 m = 3
 sound = True
@@ -131,7 +131,7 @@ def game_over():
                 # print("m after play clicked", m)
             elif q.collidepoint(event.pos):
                 pygame.quit()
-            elif s.collidepoint(event.pos):
+            elif s.collidepoint(event.pos) and event.button == 1:
                 if sound == True or sound == "placeholder":
                     sound = False
                 elif sound == False:
@@ -385,7 +385,7 @@ def draw_guide():
             # if event.button == 1:
             if p.collidepoint(event.pos):
                 m = 1
-            elif s.collidepoint(event.pos):
+            elif s.collidepoint(event.pos) and event.button == 1:
                 if sound == True or sound == "placeholder":
                     sound = False
                     # print("Sound is set to false")
@@ -723,16 +723,16 @@ while True:
                 if timer >= 0:
                     timer -= 1
             if event.type == MOUSEBUTTONDOWN:
-                if s.collidepoint(event.pos):
+                if s.collidepoint(event.pos) and event.button == 1:
                     if sound == True or sound == "placeholder":
                         sound = False
                     elif sound == False:
                         sound = True
-                # if event.button == 1:
-                #     if not is_jumping:
-                #         is_jumping = True
-                #         jump_count = 0
-                #         y_velocity = jump_velocity
+                elif event.button == 1:
+                    if not is_jumping:
+                        is_jumping = True
+                        jump_count = 0
+                        y_velocity = jump_velocity
 
         if sound == True or sound == "placeholder":
             pygame.draw.rect(screen, (92, 64, 51), (130, Height // 2 - 37.5, 25, 25))
