@@ -22,7 +22,7 @@ lines = "\n" * 5
 text = "Welcome " + name + "!"
 centered_text = text.center(80)
 
-msgbox(lines + centered_text, title="Welcome!")
+# msgbox(lines + centered_text, title="Welcome!")
 
 with open("username.json", "r") as file:
     data = json.load(file)
@@ -37,84 +37,84 @@ if name == None:
     pygame.quit()
 
 screen = pygame.display.set_mode((Width, Height))
-pygame.display.set_caption('Carbon Runner')
+pygame.display.set_caption('Carbon Challenge')
 
-m = 0
+m = 3
 sound = True
 
-def menu():
-    global m
-    global sound
-    # print("entered menu function")
-    screen.fill('black')
-    p = pygame.draw.rect(screen, 'orange', (Width//2 - 200, Height//2 - 50, 100, 50))
-    q = pygame.draw.rect(screen, 'orange', (Width//2 + 100, Height//2 - 50, 100, 50))
+# def menu():
+#     global m
+#     global sound
+#     # print("entered menu function")
+#     screen.fill('black')
+#     p = pygame.draw.rect(screen, 'orange', (Width//2 - 200, Height//2 - 50, 100, 50))
+#     q = pygame.draw.rect(screen, 'orange', (Width//2 + 100, Height//2 - 50, 100, 50))
     
-    play_text = font.render("Play", True, 'white')
-    play_text_rect = play_text.get_rect()
-    play_text_rect.center = (p.center)
+#     play_text = font.render("Play", True, 'white')
+#     play_text_rect = play_text.get_rect()
+#     play_text_rect.center = (p.center)
 
-    quit_text = font.render("Quit", True, 'white')
-    quit_text_rect = quit_text.get_rect()
-    quit_text_rect.center = (q.center)
+#     quit_text = font.render("Quit", True, 'white')
+#     quit_text_rect = quit_text.get_rect()
+#     quit_text_rect.center = (q.center)
 
-    s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+#     s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
 
-    sound_text = font.render("Sound", True, 'white')
-    sound_text_rect = sound_text.get_rect()
-    sound_text_rect.center = (s.center)
+#     sound_text = font.render("Sound", True, 'white')
+#     sound_text_rect = sound_text.get_rect()
+#     sound_text_rect.center = (s.center)
 
-    screen.blit(sound_text, sound_text_rect)
-    screen.blit(play_text, play_text_rect)
-    screen.blit(quit_text, quit_text_rect)
+#     screen.blit(sound_text, sound_text_rect)
+#     screen.blit(play_text, play_text_rect)
+#     screen.blit(quit_text, quit_text_rect)
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
+#     for event in pygame.event.get():
+#         if event.type == QUIT:
+#             pygame.quit()
 
-        if event.type == MOUSEBUTTONDOWN:
-            if p.collidepoint(event.pos):
-                m = 1
-                # print("m after play clicked", m)
-            elif q.collidepoint(event.pos):
-                pygame.quit()
-            elif s.collidepoint(event.pos):
-                if sound == True or sound == "placeholder":
-                    sound = False
-                elif sound == False:
-                    sound = True
-        if event.type == KEYDOWN:
-            if event.key == K_q:
-                pygame.quit()
-                exit()
+#         if event.type == MOUSEBUTTONDOWN:
+#             if p.collidepoint(event.pos):
+#                 m = 1
+#                 # print("m after play clicked", m)
+#             elif q.collidepoint(event.pos):
+#                 pygame.quit()
+#             elif s.collidepoint(event.pos):
+#                 if sound == True or sound == "placeholder":
+#                     sound = False
+#                 elif sound == False:
+#                     sound = True
+#         if event.type == KEYDOWN:
+#             if event.key == K_q:
+#                 pygame.quit()
+#                 exit()
     
-    if sound == True or sound == "placeholder":
-        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
-    elif sound == False:
-        pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
+    # if sound == True or sound == "placeholder":
+    #     pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
+    # elif sound == False:
+    #     pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25), 5)
 
 def game_over():
     global m
     global sound
     # print("entered menu function")
     screen.fill('black')
-    p = pygame.draw.rect(screen, 'orange', (Width//2 - 200, Height//2 - 50, 100, 50))
-    q = pygame.draw.rect(screen, 'orange', (Width//2 + 100, Height//2 - 50, 100, 50))
-    s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+    p = pygame.draw.rect(screen, (149, 39, 39), (Width//2 - 200, Height//2 - 50, 100, 50))
+    q = pygame.draw.rect(screen, (149, 39, 39), (Width//2 + 100, Height//2 - 50, 100, 50))
+    s = pygame.draw.rect(screen, (149, 39, 39), (0, Height//2 - 50, 120, 50))
 
     game_over_text = font.render("Game Over!", True, 'red')
     game_over_text_rect = game_over_text.get_rect()
     game_over_text_rect.center = (Width//2, Height//2 - 100)
     
-    play_text = font.render("Play", True, 'white')
+    play_text = font.render("Play", True, 'pink')
     play_text_rect = play_text.get_rect()
     play_text_rect.center = (p.center)
 
-    quit_text = font.render("Quit", True, 'white')
+    quit_text = font.render("Quit", True, 'pink')
     quit_text_rect = quit_text.get_rect()
     quit_text_rect.center = (q.center)
 
-    sound_text = font.render("Sound", True, 'white')
+    sound_text = font.render("Sound", True, 'pink')
     sound_text_rect = sound_text.get_rect()
     sound_text_rect.center = (s.center)
 
@@ -154,9 +154,12 @@ bg = pygame.image.load("BG.jpg")
 player_height = 0
 is_jumping = False
 
-font = pygame.font.Font("Ankh.ttf", 40)
+font = pygame.font.Font("Font.otf", 40)
 
-carbon_text = font.render("Meter: ", True, (1, 50, 32))
+guide_font = pygame.font.Font("Font.otf", 32)
+small_font = pygame.font.Font("Font.otf", 24)
+
+carbon_text = font.render("Carbon Meter: ", True, (1, 50, 32))
 carbon_rect = carbon_text.get_rect()
 carbon_rect.topleft = (250, 10)
 
@@ -184,18 +187,19 @@ for i in range(1, 3):
 num_collectables = 100
 
 class Collectable(pygame.sprite.Sprite):
-    def __init__(self, image_name, score_boost, footprint, isgood, shield):
+    def __init__(self, image_name, score_boost, footprint, isgood, shield, issmog):
         super().__init__()
         self.image_name = image_name
         self.score_boost = score_boost
         self.footprint = footprint
         self.isgood = isgood
         self.shield = shield
+        self.issmog = issmog
         self.rect = None
 
 collectables = []
 
-shield = Collectable("shield.png", 0, 0, True, True)
+shield = Collectable("shield.png", 0, 0, True, True, False)
 
 def initCollectables():
     global collectables
@@ -203,28 +207,28 @@ def initCollectables():
     for i in range(num_collectables):
         chance = random.randint(1, 100)
         if chance <= 15:
-            leaf = Collectable("leaf1.png", 2, -5, True, False)
+            leaf = Collectable("leaf1.png", 2, -5, True, False, False)
             collectables.append(leaf)
         elif chance <= 30:
-            panel = Collectable("panel1.png", 5, -10, True, False)
+            panel = Collectable("panel1.png", 5, -10, True, False, False)
             collectables.append(panel)
         elif chance <= 45:
-            evbattery = Collectable("evbattery.png", 10, -15, True, False)
+            evbattery = Collectable("evbattery.png", 10, -15, True, False, False)
             collectables.append(evbattery)
         elif chance <= 65:
-            smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False)
+            smog_cloud = Collectable("smog_cloud.png", 0, 30, False, False, True)
             collectables.append(smog_cloud)
         elif chance <= 80:
-            oil_spill = Collectable("oil_spill.png", -5, 35, False, False)
+            oil_spill = Collectable("oil_spill.png", -5, 35, False, False, False)
             collectables.append(oil_spill)
         elif chance <= 90:
-            water_bottle = Collectable("water_bottle.png", 2, 0, True, False)
+            water_bottle = Collectable("water_bottle.png", 2, 0, True, False, False)
             collectables.append(water_bottle)
         elif chance <= 99:
-            factory = Collectable("factory.png", -10, 40, False, False)
+            factory = Collectable("factory.png", -10, 40, False, False, False)
             collectables.append(factory)
         elif chance <= 100:
-            shield = Collectable("shield.png", 0, 0, True, True)
+            shield = Collectable("shield.png", 0, 0, True, True, False)
             collectables.append(shield)
 
     space = random.randint(25, 100)
@@ -234,10 +238,165 @@ def initCollectables():
         collectables[i].rect = collect_image.get_rect()
         collectables[i].rect.x = Width + space
         ground = random.randint(0, 1)
-        collectables[i].rect.y = Height - collect_image.get_height() - 100 * ground
+        if collectables[i].issmog == True:
+            collectables[i].rect.y = Height - collect_image.get_height() - 100 * ground
+        else:
+            collectables[i].rect.y = Height - collect_image.get_height()
         space += random.randint(200, 250)
 
 initCollectables()
+
+leaf_img = pygame.image.load("leaf1.png")
+panel_img = pygame.image.load("panel1.png")
+battery_img = pygame.image.load("evbattery.png")
+bottle_img = pygame.image.load("water_bottle.png")
+shield_img = pygame.image.load("shield.png")
+smog_img = pygame.image.load("smog_cloud.png")
+oil_img = pygame.image.load("oil_spill.png")
+factory_img = pygame.image.load("factory.png")
+
+def draw_guide():
+    global m
+    global sound
+
+    screen.fill((240, 240, 240))  # Light gray background
+    
+    # Title moved up
+    title = font.render("Let's Save Earth! - Game Collectibles Guide", True, (0, 0, 0))
+    title_rect = title.get_rect(center=(750, 20))  # Moved up to y=15
+    screen.blit(title, title_rect)
+    
+    # Headers - Wider for the larger screen
+    pygame.draw.rect(screen, (76, 175, 80), (50, 40, 650, 50))  # Moved down slightly to y=40
+    pygame.draw.rect(screen, (244, 67, 54), (800, 40, 650, 50))  # Moved down slightly to y=40
+    
+    good_header = font.render("Good Collectibles", True, (255, 255, 255))
+    bad_header = font.render("Bad Collectibles", True, (255, 255, 255))
+    
+    # Centered headers in their rectangles
+    good_header_rect = good_header.get_rect(center=(375, 65))  # Adjusted y to match new header position
+    bad_header_rect = bad_header.get_rect(center=(1125, 65))  # Adjusted y to match new header position
+    
+    screen.blit(good_header, good_header_rect)
+    screen.blit(bad_header, bad_header_rect)
+    
+    # Modified spacing for horizontal layout
+    y_start = 100
+    x_good_img = 80
+    x_good_text = 180
+    x_bad_img = 830
+    x_bad_text = 930
+    spacing = 75  # Vertical spacing between items
+    
+    # Good Collectibles - Left side
+    # Leaf
+    screen.blit(leaf_img, (x_good_img, y_start))
+    text = guide_font.render("Leaf (+2 score, -5 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Helps save Earth", True, (100, 100, 100))
+    screen.blit(text, (x_good_text, y_start))
+    screen.blit(desc, (x_good_text, y_start + 35))
+    
+    # Solar Panel
+    screen.blit(panel_img, (x_good_img, y_start + spacing))
+    text = guide_font.render("Solar Panel (+5 score, -10 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Eco-friendly energy source", True, (100, 100, 100))
+    screen.blit(text, (x_good_text, y_start + spacing))
+    screen.blit(desc, (x_good_text, y_start + spacing + 35))
+    
+    # EV Battery
+    screen.blit(battery_img, (x_good_img, y_start + spacing * 2))
+    text = guide_font.render("EV Battery (+10 score, -15 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Reduces fossil fuel usage", True, (100, 100, 100))
+    screen.blit(text, (x_good_text, y_start + spacing * 2))
+    screen.blit(desc, (x_good_text, y_start + spacing * 2 + 35))
+    
+    # Water Bottle
+    screen.blit(bottle_img, (x_good_img, y_start + spacing * 3))
+    text = guide_font.render("Water Bottle (+2 score, 0 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Recyclable and reusable", True, (100, 100, 100))
+    screen.blit(text, (x_good_text, y_start + spacing * 3))
+    screen.blit(desc, (x_good_text, y_start + spacing * 3 + 35))
+    
+    # Shield
+    screen.blit(shield_img, (x_good_img, y_start + spacing * 4))
+    text = guide_font.render("Shield (30sec protection)", True, (0, 0, 0))
+    desc = small_font.render("Temporary immunity", True, (100, 100, 100))
+    screen.blit(text, (x_good_text, y_start + spacing * 4))
+    screen.blit(desc, (x_good_text, y_start + spacing * 4 + 35))
+    
+    # Bad Collectibles - Right side
+    # Smog Cloud
+    screen.blit(smog_img, (x_bad_img, y_start))
+    text = guide_font.render("Smog Cloud (0 score, +30 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Fossil fuel pollution", True, (100, 100, 100))
+    screen.blit(text, (x_bad_text, y_start))
+    screen.blit(desc, (x_bad_text, y_start + 35))
+    
+    # Oil Spill
+    screen.blit(oil_img, (x_bad_img, y_start + spacing))
+    text = guide_font.render("Oil Spill (-5 score, +35 carbon)", True, (0, 0, 0))
+    desc = small_font.render("Environmental hazard", True, (100, 100, 100))
+    screen.blit(text, (x_bad_text, y_start + spacing))
+    screen.blit(desc, (x_bad_text, y_start + spacing + 35))
+    
+    # Factory
+    screen.blit(factory_img, (x_bad_img, y_start + spacing * 2))
+    text = guide_font.render("Factory (-10 score, +40 carbon)", True, (0, 0, 0))
+    desc = small_font.render("High emissions source", True, (100, 100, 100))
+    screen.blit(text, (x_bad_text, y_start + spacing * 2))
+    screen.blit(desc, (x_bad_text, y_start + spacing * 2 + 35))
+    
+    # Add instructions at bottom
+    exit_text = small_font.render("Press ESC to exit", True, (100, 100, 100))
+    exit_rect = exit_text.get_rect(center=(750, 470))
+    screen.blit(exit_text, exit_rect)
+
+    p = pygame.draw.rect(screen, (149, 39, 39), (700, 400, 100, 50))
+    # q = pygame.draw.rect(screen, 'orange', (1050, 420, 100, 50))
+    
+    play_text = font.render("Play", True, 'pink')
+    play_text_rect = play_text.get_rect()
+    play_text_rect.center = (p.center)
+
+    # quit_text = font.render("Quit", True, 'white')
+    # quit_text_rect = quit_text.get_rect()
+    # quit_text_rect.center = (q.center)
+
+    s = pygame.draw.rect(screen, (149, 39, 39), (Width - 175, 400, 120, 50))
+
+    sound_text = font.render("Sound", True, 'pink')
+    sound_text_rect = sound_text.get_rect()
+    sound_text_rect.center = (s.center)
+
+    screen.blit(sound_text, sound_text_rect)
+    screen.blit(play_text, play_text_rect)
+    # screen.blit(quit_text, quit_text_rect)
+    
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                exit()
+        if event.type == MOUSEBUTTONDOWN:
+            # if event.button == 1:
+            if p.collidepoint(event.pos):
+                m = 1
+            elif s.collidepoint(event.pos):
+                if sound == True or sound == "placeholder":
+                    sound = False
+                    # print("Sound is set to false")
+                elif sound == False:
+                    sound = True
+                    # print("Sound is set to true")
+        
+    # print("Exiting draw_guide...")
+    if sound == True or sound == "placeholder":
+        pygame.draw.rect(screen, 'red', (1460, 412.5, 25, 25))
+    elif sound == False:
+        pygame.draw.rect(screen, 'red', (1460, 412.5, 25, 25), 5)
 
 encounters = {}
 instructions = {"leaf1.png": "Catch this! Leaves and trees are important for saving Earth.",
@@ -285,10 +444,10 @@ def show_instruction_popup(collecteditem):
                 screen.blit(timer_text, timer_text_rect)
             screen.blit(carbon_text, carbon_rect)
 
-            carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
-            pygame.draw.rect(screen, (139, 0, 0), (420, 29, limit, 10), 1)
+            carbon = pygame.draw.rect(screen, color, (520, 23, meter_length, 15))
+            pygame.draw.rect(screen, (139, 0, 0), (520, 23, limit, 15), 1)
 
-            s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+            s = pygame.draw.rect(screen, (149, 39, 39), (0, Height//2 - 50, 120, 50))
 
             sound_text = font.render("Sound", True, 'white')
             sound_text_rect = sound_text.get_rect()
@@ -337,11 +496,13 @@ def show_instruction_popup(collecteditem):
                         pygame.quit()
                         exit()
                 if event.type == MOUSEBUTTONDOWN:
-                    if s.collidepoint(event.pos):
+                    if s.collidepoint(event.pos) and event.button == 1:
                         if sound == True or sound == "placeholder":
                             sound = False
                         elif sound == False:
                             sound = True
+                    if event.button == 1:
+                        running = False
             
             if sound == True or sound == "placeholder":
                 pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
@@ -401,13 +562,19 @@ while True:
     clock.tick(FPS)
 
     if sound == False:
+        # print("Sound is false in while")
         pygame.mixer.music.pause()
     elif sound == True:
+        # print("Sound is true in while")
         pygame.mixer.music.unpause()
         sound = "placeholder"
 
-    if m == 0:
-        menu()
+    # if m == 0:
+    #     menu()
+    #     pygame.display.update()
+
+    if m == 3:
+        draw_guide()
         pygame.display.update()
 
     elif m == 2:
@@ -444,10 +611,10 @@ while True:
             screen.blit(timer_text, timer_text_rect)
         screen.blit(carbon_text, carbon_rect)
 
-        carbon = pygame.draw.rect(screen, color, (420, 29, meter_length, 10))
-        pygame.draw.rect(screen, (139, 0, 0), (420, 29, limit, 10), 1)
+        carbon = pygame.draw.rect(screen, color, (520, 23, meter_length, 15))
+        pygame.draw.rect(screen, (139, 0, 0), (520, 23, limit, 15), 1)
         
-        s = pygame.draw.rect(screen, "orange", (0, Height//2 - 50, 120, 50))
+        s = pygame.draw.rect(screen, (149, 39, 39), (0, Height//2 - 50, 120, 50))
 
         sound_text = font.render("Sound", True, 'white')
         sound_text_rect = sound_text.get_rect()
@@ -534,7 +701,7 @@ while True:
                         jump_count = 0
                         y_velocity = jump_velocity
                 if event.key == K_ESCAPE:
-                    m = 0
+                    m = 3
                     score = 0
                     timer = -1
                     player_rect.centerx = Width//2
@@ -560,6 +727,11 @@ while True:
                         sound = False
                     elif sound == False:
                         sound = True
+                # if event.button == 1:
+                #     if not is_jumping:
+                #         is_jumping = True
+                #         jump_count = 0
+                #         y_velocity = jump_velocity
 
         if sound == True or sound == "placeholder":
             pygame.draw.rect(screen, 'red', (130, Height // 2 - 37.5, 25, 25))
