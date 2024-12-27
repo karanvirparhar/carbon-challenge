@@ -291,7 +291,7 @@ def draw_guide():
     # Good Collectibles - Left side
     # Leaf
     screen.blit(leaf_img, (x_good_img, y_start))
-    text = guide_font.render("Leaf (+2 score, -5 carbon)", True, (0, 0, 0))
+    text = guide_font.render("Tree (+2 score, -5 carbon)", True, (0, 0, 0))
     desc = small_font.render("Helps save Earth", True, (100, 100, 100))
     screen.blit(text, (x_good_text, y_start))
     screen.blit(desc, (x_good_text, y_start + 35))
