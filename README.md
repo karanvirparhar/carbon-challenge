@@ -6,5 +6,8 @@ This educational and fun game aims to raise awareness about climate change, and 
 - Clone this repository
 - Install Python 3.x version
 - Install the required libraries uging the requirements.txt file
-``` pip install -r requirements.txt```
+
+``` 
+pip install -r requirements.txt
+```
 - Launch the game with CarbonChallenge.py
