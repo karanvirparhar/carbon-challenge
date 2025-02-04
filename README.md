@@ -10,4 +10,7 @@ This educational and fun game aims to raise awareness about climate change, and 
 ``` 
 pip install -r requirements.txt
 ```
-- Launch the game with CarbonChallenge.py
+- Launch the game with:
+```
+python CarbonChallenge.py
+```
