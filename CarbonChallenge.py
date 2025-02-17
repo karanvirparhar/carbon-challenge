@@ -509,7 +509,7 @@ def show_instruction_popup(collecteditem):
                     pygame.quit()
                     exit()
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                    if event.key == K_ESCAPE or event.key == K_SPACE or event.key == K_UP:
                         running = False
                     if event.key == K_q:
                         pygame.quit()
@@ -714,7 +714,7 @@ while True:
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN:
-                if event.key == K_SPACE:
+                if event.key == K_SPACE or event.key == K_UP:
                     if not is_jumping:
                         is_jumping = True
                         jump_count = 0
