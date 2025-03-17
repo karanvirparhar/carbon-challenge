@@ -242,9 +242,9 @@ def initcollectibles():
         collectibles[i].rect.x = Width + space
         ground = random.randint(0, 1)
         if collectibles[i].issmog == True:
-            collectibles[i].rect.y = Height - collect_image.get_height() - 100 * ground
+            collectibles[i].rect.y = Height - collect_image.get_height() - 100 * ground - 10
         else:
-            collectibles[i].rect.y = Height - collect_image.get_height()
+            collectibles[i].rect.y = Height - collect_image.get_height() - 10
         space += random.randint(200, 250)
 
 initcollectibles()
@@ -819,9 +819,9 @@ while True:
             player_rect.y = player_y
             is_jumping = False
 
-        if player_rect.bottom > Height:
+        if player_rect.bottom > Height - 10:
             is_jumping = False
-            player_rect.bottom = Height
+            player_rect.bottom = Height - 10
             jump_count = 0
             y_velocity = jump_velocity
         
