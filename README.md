@@ -33,6 +33,10 @@ pip install -r requirements.txt
 python CarbonChallenge.py
 ```
 
+## Game stages
+
+![Full game overview](captures/overview.gif)
+
 ## ACSEF (Alameda County Science & Engineering Fair)
 
 This project got the third place award in the Alameda County Science & Engineering Fair in March 2025.
