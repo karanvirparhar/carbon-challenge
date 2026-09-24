@@ -33,8 +33,6 @@ pip install -r requirements.txt
 python CarbonChallenge.py
 ```
 
-## Game stages
-
 ![Full game overview](captures/overview.gif)
 
 ## ACSEF (Alameda County Science & Engineering Fair)
